@@ -1,0 +1,131 @@
+.data 
+arr: .space 40
+user_guide: .asciiz "Enter the value for the array.\n"
+endl : .asciiz "\n" 
+.text
+li $t0 , 0
+li $s1 ,0
+li $t1 ,0
+li $t3 ,20
+li $t5 ,2
+li $v0 ,4
+la $a0 , user_guide
+syscall
+arr_insert:
+beq $t0 ,20,arthematic
+li $v0,5
+syscall
+move $s0 , $v0 
+sw $s0 , arr($t0)
+addi $t0 ,$t0,4
+j arr_insert
+set_zero:
+addi $t0 ,$0 ,0
+jr $ra
+arthematic:
+jal set_zero
+
+mod:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#divu  $t3 , $t5 
+#mfhi $t4
+#bne $t4 , $0 ,median
+#subi $t3 , $t3 ,4 
+#divu  $t3 , $t5 
+#mflo $t4 
+#lw $s0 , arr($t4)
+#move $a0 , $s0 
+#li $v0 ,1 
+#syscall
+#j exit
+#median:
+#lw $s0 , arr($t4)
+#move $a0 , $s0 
+#li $v0 ,1 
+#syscall
+
+#syscall
+
+#addi $t4 , $t4 ,1
+#next:
+#jal set_zero
+#mean:
+#beq $t0 ,20,display_mean
+#lw $s0 , arr($t0)
+#add $s1 , $s1 , $s0
+#addi $t0, $t0 ,4
+#addi $t1, $t1,1
+#j mean
+#display_mean:
+#div $a0 , $s1 ,$t1
+#li $v0 , 1
+#syscall
+#display:
+#beq $t0 ,20,exit
+#lw $s0 , arr($t0)
+#li $v0 ,1
+#move $a0 , $s0
+#syscall
+#vli $v0 , 4
+#la $a0 , endl
+#syscall
+#addi $t0, $t0 ,4
+#j display
+
+exit:
+li $v0 , 10
+syscall
+
+##################################
+#sort:
+#beq $t0 , 20 , arthematic
+#beq $t4 , 5 , next
+#addi $t1 , $t0 ,4
+#lw $s0 , arr($t0)
+#lw $s1 ,arr($t1)
+#bgt $s0 , $s1 ,swap
+#addi $t0 , $t0 ,4
+#j sort
+
+#swap:
+#move $t2 , $s0
+#move $s0,$s1
+#move $s1 , $t2
+#sw $s0 , arr($t0)
+#sw $s1 , arr($t1)
+#addi $t0 , $t0 ,4
+#j sort
+
+#sum:
+#beq $t0 ,20,display_sum
+#lw $s0 , arr($t0)
+#add $s1 , $s1 , $s0
+#addi $t0, $t0 ,4
+#j sum
+#display_sum:
+#li $v0 ,1
+#move $a0 , $s1
+#syscall
+#j exit

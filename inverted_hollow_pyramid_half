@@ -1,0 +1,60 @@
+.data
+starik: .asciiz "*"
+endl: .asciiz "\n"
+space:.asciiz " " 
+
+.text
+addi $s0,$zero,0	#i
+addi $s1 , $zero ,0	#j
+addi $t0 , $zero ,6	#temp
+###############################################################
+for0:
+blt $s0 ,7 , print
+j inull
+
+print:
+li $v0 ,4
+la $a0 , starik
+syscall
+addi $s0 ,$s0 ,1
+j for0
+###############################################################
+inull:
+sub $s0 , $s0 ,$s0	#i=0
+addi $s0 , $s0 ,0
+jnull:
+sub $s1 , $s1 , $s1 	#j=0
+addi $s0 ,$s0 ,1
+sub $t1 , $t0 ,$s0 #size-1
+li $v0 ,4
+la $a0 , endl
+syscall
+
+point2:
+blt $s0 ,$t0 , for1 	#i<size
+j exit
+
+for1:
+blt $s1 , $t1 , condition	#j<i
+
+condition:
+beq $s1 , 0 , print1#j==0
+beq $s1 , $t1 ,print1 #j==size-1
+li $v0 ,4
+la $a0 , space
+syscall
+addi $s1 , $s1 ,1
+j for1
+
+print1:
+li $v0 ,4
+la $a0 , starik
+syscall
+beq $s1 , $t1,jnull
+addi $s1 , $s1 ,1
+beq $s1 , $t1,jnull
+j for1 # error
+
+exit:
+li $v0 ,10
+syscall

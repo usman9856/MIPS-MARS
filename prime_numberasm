@@ -1,0 +1,45 @@
+.data 
+Prime: .asciiz "Entered number is a prime number. "
+notPrime:.asciiz "Entered number is not a prime number"
+endl: .asciiz "\n"
+
+.text
+addi $t0 , $t0 ,2
+addi $t1 , $t1 ,3
+addi $t2 , $t2 ,5
+##	##	##
+li $v0 , 5 		#system get ready for integer input
+syscall	 
+move $s0 , $v0	#move input value to s0
+##	##	##
+beq $s0 , $t0 ,isprime
+beq $s0 , $t1 ,isprime
+beq $s0 , $t2 ,isprime
+##	##	##
+divu  $s0,$t0	#divide input value by 2 and store in temporary register
+mfhi $s1 		#moving remainder to s3 
+beq $s1 , $zero , ans	#comparing the remainder of the answer with zero if true jump to ans
+
+divu  $s0 , $t1	#if previouse not true condition not true execute input value by 3
+mfhi $s1 		#move reamainder value to s3
+beq $s1 , $zero , ans   #compare the remainder value with zero if true jump to ans
+
+divu  $s0 , $t2	#if previouse not true condition not true execute input value by 5
+mfhi $s1 		#move reamainder value to s3
+beq $s1 , $zero , ans   #compare the remainder value with zero if true jump to ans
+##	##	##
+isprime:
+li $v0 , 4 		#system get ready to print string / char value
+la $a0 , Prime	
+syscall
+##	##	##
+li $v0 ,10		#system terminate loop
+syscall
+##	##	##
+ans:		#branch jump location point
+li $v0 , 4 		#system get ready to print string / char
+la $a0 , notPrime
+syscall
+
+
+

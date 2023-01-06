@@ -1,0 +1,64 @@
+.data 
+starik : .asciiz "* "
+endl: .asciiz "\n"
+space: .asciiz " "
+.text
+li $s0 , 0	#i
+li $s1 , 0	#j
+li $s2 , 0	#k
+li $t0 , 6	#row
+li $t5 ,2
+
+for1:
+li $v0 ,4
+la $a0 ,endl
+syscall
+add $t6 , $s0 ,$t0	#
+ 
+sub $t1 , $t0 ,$s0	#row - i
+
+mult  $t5 , $t6	#2*i	
+mflo $t3	
+subi $t3 , $t3 ,1	#2*i-1
+
+#subi $t4 ,$s0 ,1	
+
+for2:
+blt $s2 , $t1 , print_space
+j for3
+print_space:
+li $v0 ,4
+la $a0 , space
+syscall
+addi $s2 , $s2 ,1
+j for2
+
+for3:
+add $s1 , $s0 , $s1
+ble $s1 , $t3 , print_starik1
+j for4
+print_starik1:
+li $v0 ,4 
+la $a0 ,starik
+syscall
+addi $s1 , $s1 ,1
+j for3
+
+for4:
+sub $s1 ,$s1 ,$s1
+blt $s1,$s0,print_starik2
+j check
+print_starik2:
+li $v0 ,4
+la $a0 , starik
+syscall
+check:
+bge $s0 , 1 , for1
+subi $s0 , $s0 ,1
+j exit
+
+exit:
+li $v0 ,10
+syscall
+
+  

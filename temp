@@ -1,0 +1,35 @@
+.data
+row: .word 7
+col: .word 7 
+endl: .asciiz "\n" 
+starik: .byte '*'
+.text
+lw $s0 , row
+lw $s1 , col
+addi $t0 , $t0 ,0	#initialize temp0 to zero
+addi $t1 , $t1 ,0
+#################################################
+loop0:			#loop0
+
+subi $s0 , $s0 ,1	#add 1 to temp0
+sub $t1  ,$t1 ,$t1
+subi $s1 ,$s1 ,1
+li $v0 ,4
+la $a0 , endl		#display endl
+syscall
+#sub $s0 , $s0 ,1	#decrement row
+#addi $s1 ,$s1 ,6
+beq $t0 , $s0 ,exit	#if temp0 == row exit
+#################################################
+loop1:			#loop1
+li $v0 ,4
+la $a0 , starik		#display starik
+syscall			
+addi $t1 , $t1 ,1	#increment temp1
+#subi $s1 ,$s1 ,1
+beq $t1 , $s1 , loop0	#if temp 1 = 0 jump to loop0
+j loop1			#else jump to loop1
+#################################################
+exit:
+li $v0 , 10		#end loop
+syscall			

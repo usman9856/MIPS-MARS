@@ -1,0 +1,32 @@
+#3 x^2 , -10x ,3
+# (-b+((b^2-4ac)^1/2)) / 2a
+.data 
+a : .double 3
+b1 : .double 10
+c : .double 3
+negative: .double -1.00
+positive_var1 : .double 2.00
+positive_var2 : .double 4.00
+.text
+ldc1 $f0 ,a
+ldc1 $f2 ,b1
+ldc1 $f4 ,c
+ldc1 $f6 ,negative
+ldc1 $f8 ,positive_var1
+ldc1 $f10,positive_var2
+
+mul.d $f14 , $f0 , $f4	#4ac
+mul.d $f14 , $f14 ,$f10
+mul.d $f16 , $f2 ,$f2	#b^2
+sub.d $f16 , $f16 , $f14	# b^2 - 4ac
+sqrt.d $f16 , $f16	#(b^2 - 4ac)^1/2
+mul.d $f14 , $f2 , $f6	#-b
+#positive addition
+add.d $f14 , $f14 , $f16#-b+(b^2 - 4ac)^1/2
+#change the upper value from add.d to sub.d for other value
+mul.d $f18 , $f0 , $f8	#2a 
+li $v0 , 3	#(-b+(b^2 - 4ac)^1/2)/2a
+div.d $f12 , $f14 ,$f18
+mul.d $f12 ,$f12 ,$f6
+syscall
+
